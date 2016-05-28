@@ -1,0 +1,31 @@
+image: ruby:2.3.1
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -y -qq nodejs
+  - apt-get install -y libqt5webkit5-dev qt5-default xvfb
+  - wget -q https://gitlab.com/axil/phantomjs-debian/raw/master/phantomjs_1.9.8-0jessie_amd64.deb
+  - dpkg -i phantomjs_1.9.8-0jessie_amd64.deb
+  - bundle install
+
+stages:
+  - bot1
+  - bot2
+
+first_bot:
+  stage: bot1
+  script:
+    - bundle exec ruby main.rb
+  only:
+    - master
+  tags:
+    - ruby
+
+second_bot:
+  stage: bot2
+  script:
+    - bundle exec ruby main.rb
+  only:
+    - master
+  tags:
+    - ruby
